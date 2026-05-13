@@ -119,7 +119,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 85000,
                 'original_price' => 100000,
                 'stock' => 25,
-                'image' => 'beef.png',
+                'image' => 'beef.avif',
                 'category_id' => $dagingCategory->id,
                 'rating' => 4.9,
                 'reviews_count' => 156
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 95000,
                 'original_price' => 120000,
                 'stock' => 35,
-                'image' => 'shrimp.png',
+                'image' => 'udang-vaname.png',
                 'category_id' => $seafoodCategory->id,
                 'rating' => 4.8,
                 'reviews_count' => 134
