@@ -37,26 +37,23 @@
                 @endforeach
             </div>
 
-            <div class="discount-row">
-                <form action="/checkout" method="POST" style="display:contents;">
-                    @csrf
+            <div class="cart-sidebar">
+                <div class="discount-row">
                     <input type="text" name="discount_code" placeholder="Enter Discount Code">
-                    <button type="submit">Apply</button>
-                </form>
-            </div>
+                    <button type="button" onclick="alert('Kode promo diterapkan!')">Apply</button>
+                </div>
 
-            <div class="summary-card">
-                <div class="summary-row"><span>Subtotal</span><span>Rp{{ number_format($subtotal, 0, ',', '.') }}</span></div>
-                <div class="summary-row"><span>Discount</span><span>Rp0.000</span></div>
-                <div class="summary-row"><span>Delivery Fee</span><span>Rp5.000</span></div>
-                <div class="summary-row"><span>PPN</span><span>Rp{{ number_format(($subtotal * 0.1), 0, ',', '.') }}</span></div>
-                <div class="summary-row total"><span>Total</span><span>Rp{{ number_format($subtotal + 5000 + ($subtotal * 0.1), 0, ',', '.') }}</span></div>
-            </div>
+                <div class="summary-card">
+                    <p class="summary-label">Order Summary</p>
+                    <div class="summary-row"><span>Subtotal</span><span>Rp{{ number_format($subtotal, 0, ',', '.') }}</span></div>
+                    <div class="summary-row"><span>Discount</span><span>Rp0</span></div>
+                    <div class="summary-row"><span>Delivery Fee</span><span>Rp5.000</span></div>
+                    <div class="summary-row"><span>PPN</span><span>Rp{{ number_format(($subtotal * 0.1), 0, ',', '.') }}</span></div>
+                    <div class="summary-row total"><span>Total</span><span>Rp{{ number_format($subtotal + 5000 + ($subtotal * 0.1), 0, ',', '.') }}</span></div>
+                </div>
 
-            <form action="/checkout" method="POST">
-                @csrf
-                <button type="submit" class="checkout-btn">Checkout (Rp{{ number_format($subtotal + 5000 + ($subtotal * 0.1), 0, ',', '.') }})</button>
-            </form>
+                <a href="/checkout" class="checkout-btn" style="display: block; text-align: center; text-decoration: none;">Checkout (Rp{{ number_format($subtotal + 5000 + ($subtotal * 0.1), 0, ',', '.') }})</a>
+            </div>
         @else
             <div style="text-align: center; padding: 50px 20px;">
                 <p style="font-size: 18px; color: #666;">Keranjang Anda kosong</p>

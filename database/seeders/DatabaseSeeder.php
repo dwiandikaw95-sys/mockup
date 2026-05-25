@@ -15,15 +15,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create test user
-        User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password123'),
-            'email_verified_at' => now(),
-        ]);
+        // Create Admin User (upsert to avoid duplicate email)
+        User::updateOrCreate(
+            ['email' => 'admin@daw.com'],
+            [
+                'name' => 'Admin DAW Fresh',
+                'password' => Hash::make('123'),
+                'email_verified_at' => now(),
+                'role' => 'admin',
+            ]
+        );
 
-        // Create categories
+        // Create Regular User (upsert to avoid duplicate email)
+        User::updateOrCreate(
+            ['email' => 'user@daw.com'],
+            [
+                'name' => 'User DAW Fresh',
+                'password' => Hash::make('123'),
+                'email_verified_at' => now(),
+                'role' => 'user',
+            ]
+        );
+
         $categories = [
             ['name' => 'All', 'slug' => 'all', 'description' => 'Semua produk'],
             ['name' => 'Sayur', 'slug' => 'sayur', 'description' => 'Sayuran segar'],
@@ -33,25 +46,25 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::updateOrCreate(
+                ['slug' => $category['slug']],
+                $category
+            );
         }
 
-        // Get categories
         $sayurCategory = Category::where('slug', 'sayur')->first();
         $buahCategory = Category::where('slug', 'buah')->first();
         $dagingCategory = Category::where('slug', 'daging')->first();
         $seafoodCategory = Category::where('slug', 'seafood')->first();
 
-        // Create products
         $products = [
-            // Sayur
             [
                 'name' => 'Tomat Segar',
                 'description' => 'Tomat merah segar berkualitas tinggi',
                 'price' => 15000,
                 'original_price' => 20000,
                 'stock' => 50,
-                'image' => 'tomato.png',
+                'image' => 'tomat.png',
                 'category_id' => $sayurCategory->id,
                 'rating' => 4.8,
                 'reviews_count' => 156
@@ -62,12 +75,11 @@ class DatabaseSeeder extends Seeder
                 'price' => 12000,
                 'original_price' => 15000,
                 'stock' => 40,
-                'image' => 'carrot.png',
+                'image' => 'wortel.png',
                 'category_id' => $sayurCategory->id,
                 'rating' => 4.6,
                 'reviews_count' => 98
             ],
-            // Buah
             [
                 'name' => 'Pisang Kuning',
                 'description' => 'Pisang kuning matang manis',
@@ -85,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 25000,
                 'original_price' => 30000,
                 'stock' => 30,
-                'image' => 'apple.png',
+                'image' => 'apel.png',
                 'category_id' => $buahCategory->id,
                 'rating' => 4.9,
                 'reviews_count' => 167
@@ -96,12 +108,11 @@ class DatabaseSeeder extends Seeder
                 'price' => 18000,
                 'original_price' => 22000,
                 'stock' => 45,
-                'image' => 'mango.png',
+                'image' => 'mangga.png',
                 'category_id' => $buahCategory->id,
                 'rating' => 4.8,
                 'reviews_count' => 145
             ],
-            // Daging
             [
                 'name' => 'Daging Ayam',
                 'description' => 'Daging ayam segar dan higienis',
@@ -124,7 +135,6 @@ class DatabaseSeeder extends Seeder
                 'rating' => 4.9,
                 'reviews_count' => 156
             ],
-            // Seafood
             [
                 'name' => 'Ikan Salmon',
                 'description' => 'Ikan salmon segar impor',
@@ -147,10 +157,24 @@ class DatabaseSeeder extends Seeder
                 'rating' => 4.8,
                 'reviews_count' => 134
             ],
+            [
+                'name' => 'Avokado',
+                'description' => 'Avokado segar',
+                'price' => 32000,
+                'original_price' => 40000,
+                'stock' => 25,
+                'image' => 'avocado-mango.png',
+                'category_id' => $buahCategory->id,
+                'rating' => 4.7,
+                'reviews_count' => 92
+            ],
         ];
 
         foreach ($products as $product) {
-            Product::create($product);
+            Product::updateOrCreate(
+                ['name' => $product['name']],
+                $product
+            );
         }
     }
 }

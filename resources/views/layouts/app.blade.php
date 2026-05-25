@@ -10,6 +10,13 @@
     <div class="app-shell">
         <div class="phone">
             <div class="container">
+                @auth
+                    <form action="/logout" method="POST" style="position: fixed; top: 8px; right: 8px; z-index: 9999;">
+                        @csrf
+                        <button type="submit" class="icon-circle" style="border: none; cursor: pointer;">⏻</button>
+                    </form>
+                @endauth
+
                 @yield('content')
             </div>
         </div>

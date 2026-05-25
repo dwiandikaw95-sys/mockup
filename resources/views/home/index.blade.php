@@ -4,8 +4,8 @@
     <div class="home-page">
         <div class="home-header">
             <div>
-                <p class="label">Deliver to</p>
-                <p class="location">Indonesia, Jakarta</p>
+                <p class="label"><span style="margin-right: 4px;">📍</span>Deliver to</p>
+                <p class="location" style="display: flex; align-items: center; gap: 4px;">Indonesia, Jakarta <span style="font-size: 10px; color: #8e8e93;">▼</span></p>
             </div>
             <div class="header-actions">
                 <a href="#" class="icon-circle">🔍</a>
@@ -13,13 +13,13 @@
             </div>
         </div>
 
-        <h1 class="main-title">Bahan makanan <span>segar.</span><br>Tanpa ribet.</h1>
+        <h1 class="main-title"><span style="color: #F2721C;">Bahan makanan</span> segar.<br>Tanpa ribet.</h1>
 
         <div class="hero-card">
             <div class="hero-card-top">
                 <span class="hero-highlight">25% Discount</span>
             </div>
-            <div class="hero-card-body">
+<div class="hero-card-body">
                 <div>
                     <p class="hero-text">Belanja segar. Makan sehat. Hidup lebih baik.</p>
                     <a href="#" class="hero-button">Shop Now</a>

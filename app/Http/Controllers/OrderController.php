@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())
+        $orders = Order::where('user_id', Auth::id())
             ->with('items.product')
             ->orderByDesc('created_at')
             ->get();
@@ -21,20 +22,40 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::where('user_id', auth()->id())
+        $order = Order::where('user_id', Auth::id())
             ->with('items.product')
             ->findOrFail($id);
 
         return view('order.detail', ['order' => $order]);
     }
 
+    public function showCheckout()
+    {
+        $cartItems = Cart::where('user_id', Auth::id())
+            ->with('product')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect('/cart')->with('error', 'Keranjang kosong');
+        }
+
+        $subtotal = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        return view('order.checkout', [
+            'cartItems' => $cartItems,
+            'subtotal' => $subtotal,
+        ]);
+    }
+
     public function checkout(Request $request)
     {
         $request->validate([
-            'discount_code' => 'nullable|string'
+            'discount_code' => 'nullable|string',
         ]);
 
-        $cartItems = Cart::where('user_id', auth()->id())
+        $cartItems = Cart::where('user_id', Auth::id())
             ->with('product')
             ->get();
 
@@ -42,7 +63,6 @@ class OrderController extends Controller
             return back()->with('error', 'Keranjang kosong');
         }
 
-        // Calculate totals
         $subtotal = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
@@ -54,13 +74,13 @@ class OrderController extends Controller
 
         // Create order
         $order = Order::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'subtotal' => $subtotal,
             'discount' => $discount,
             'delivery_fee' => $deliveryFee,
             'tax' => $tax,
             'total' => $total,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         // Create order items
@@ -70,19 +90,19 @@ class OrderController extends Controller
                 'product_id' => $cartItem->product_id,
                 'quantity' => $cartItem->quantity,
                 'price' => $cartItem->product->price,
-                'subtotal' => $cartItem->product->price * $cartItem->quantity
+                'subtotal' => $cartItem->product->price * $cartItem->quantity,
             ]);
         }
 
         // Clear cart
-        Cart::where('user_id', auth()->id())->delete();
+        Cart::where('user_id', Auth::id())->delete();
 
-        return redirect('/orders/' . $order->id)->with('success', 'Pesanan berhasil dibuat');
+        return redirect('/orders/'.$order->id)->with('success', 'Pesanan berhasil dibuat');
     }
 
     public function confirmPayment($id)
     {
-        $order = Order::where('user_id', auth()->id())->findOrFail($id);
+        $order = Order::where('user_id', Auth::id())->findOrFail($id);
         $order->update(['status' => 'confirmed']);
 
         return back()->with('success', 'Pesanan dikonfirmasi');

@@ -40,9 +40,9 @@
 
                 <p class="forgot">forget password?</p>
 
-                <button class="btn" type="submit">Login in</button>
+                <button class="btn" type="submit">Login</button>
 
-                <p class="signup">Belum punya akun? <a href="/register" style="color: #FF8C42; text-decoration: none;">Sign up</a></p>
+                <p class="signup"><a href="/register" style="color: #1a1a1a; text-decoration: none; font-weight: 700;">Sign up</a></p>
 
                 <div class="social">
                     <div class="circle">G</div>

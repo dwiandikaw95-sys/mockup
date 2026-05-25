@@ -8,9 +8,9 @@
             <div class="icon-button">📦</div>
         </div>
 
-        @if($orders->count() > 0)
+        @if ($orders->count() > 0)
             <div class="orders-list">
-                @foreach($orders as $order)
+                @foreach ($orders as $order)
                     <a href="/orders/{{ $order->id }}" class="order-card">
                         <div class="order-header">
                             <div>
@@ -22,8 +22,9 @@
                             </div>
                         </div>
                         <div class="order-items">
-                            @foreach($order->items as $item)
-                                <p class="order-item">{{ $item->product->name }} x{{ $item->quantity }}</p>
+                            @foreach ($order->items as $item)
+                                <p class="order-item">{{ optional($item->product)->name ?? 'Product Unavailable' }}
+                                    x{{ $item->quantity }}</p>
                             @endforeach
                         </div>
                         <div class="order-footer">
@@ -35,7 +36,9 @@
         @else
             <div style="text-align: center; padding: 50px 20px;">
                 <p style="font-size: 18px; color: #666;">Anda belum membuat pesanan</p>
-                <a href="/home" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #FF8C42; color: white; text-decoration: none; border-radius: 25px;">Mulai Belanja</a>
+                <a href="/home"
+                    style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #FF8C42; color: white; text-decoration: none; border-radius: 25px;">Mulai
+                    Belanja</a>
             </div>
         @endif
     </div>
