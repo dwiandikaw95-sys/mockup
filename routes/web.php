@@ -18,7 +18,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/home', [ProductController::class, 'index'])->name('home');
     
-    // Logout helper (optional): route GET /logout untuk kompatibilitas UI yang sudah memakai href="/logout"
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
@@ -34,9 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/orders/{id}/confirm', [OrderController::class, 'confirmPayment'])->name('orders.confirm');
 
-    // Admin
-    Route::middleware('admin')->group(function () {
+    Route::middleware(\App\Http\Middleware\IsAdmin::class)->group(function () {
         Route::get('/admin/dashboard', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
 
         Route::get('/admin/products', [\App\Http\Controllers\AdminProductController::class, 'index'])->name('admin.products.index');
         Route::get('/admin/products/create', [\App\Http\Controllers\AdminProductController::class, 'create'])->name('admin.products.create');
